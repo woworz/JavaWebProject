@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面</title>
+</head>
+<body>
+    <div class="container">
+        <h2>登录页面</h2>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">用户名：</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
