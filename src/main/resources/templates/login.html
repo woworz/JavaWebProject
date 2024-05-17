@@ -9,10 +9,21 @@
         <h2>登录页面</h2>
         <form th:action="@{/login}" method="post">
             <div>
-                <label for="username">用户名：</label>
-                <input type="text" id="username" name="username" required>
+                <label for="username">用户名：</label><!--这个label与下面input关联-->
+                <input type="text" id="username" name="username" required><!--强制填写-->
+            </div>
+            <div>
+                <label for="password">密码：</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <button type="submit">登录</button>
+                <button type="button">注册</button>
             </div>
         </form>
+        <div th:if="${error}">
+            <p th:text="${error}"></p>
+        </div>
     </div>
 </body>
 </html>
