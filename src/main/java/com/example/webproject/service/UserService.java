@@ -12,4 +12,15 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    public User getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+
+    public void insertUser(User user) {
+        userMapper.insertUser(user);
+    }
+
+    public User getUserByUsername(String username) {
+        return userMapper.getUserByUsername(username);
+    }
 }

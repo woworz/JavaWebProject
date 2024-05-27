@@ -1,5 +1,6 @@
 package com.example.webproject.mapper;
 import com.example.webproject.entity.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -8,6 +9,12 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM user WHERE username = #{username}")
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    User getUserById(Long id);
+
+    @Insert("INSERT INTO users(username, password) VALUES(#{username}, #{password})")
+    void insertUser(User user);
+
+    @Select("SELECT * FROM users WHERE username = #{username}")
     User getUserByUsername(String username);
 }
