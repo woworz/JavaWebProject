@@ -1,18 +1,25 @@
 package com.example.webproject.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
-    /**
-     * 用户id
-     */
-    private Long id;
-    /**
-     * 用户名
-     */
-    private String username;
-    /**
-     * 用户密码
-     */
-    private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; //用户id
+    private String username; //用户名
+    private String password; //密码
+
+    // 无参构造函数
+    public User() {}
+
+    // 全参构造函数
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -36,5 +43,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
