@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoList</title>
+</head>
+<body>
+<h2>TodoList</h2>
+<form th:action="@{/todo/add}" method="post">
+    <div>
+        <label for="title">标题：</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="description">描述：</label>
+        <input type="text" id="description" name="description" required>
+    </div>
+    <div>
+        <button type="submit">添加</button>
+    </div>
+</form>
+<ul>
+    <li th:each="todo : ${todos}">
+        <form th:action="@{/todo/update}" method="post">
+            <input type="hidden" name="id" th:value="${todo.id}">
+            <div>
+                <label>标题：</label>
+                <input type="text" name="title" th:value="${todo.title}" required>
+            </div>
+            <div>
+                <label>描述：</label>
+                <input type="text" name="description" th:value="${todo.description}" required>
+            </div>
+            <div>
+                <label>完成：</label>
+                <input type="checkbox" name="completed" th:checked="${todo.completed}">
+            </div>
+            <div>
+                <button type="submit">更新</button>
+            </div>
+        </form>
+        <form th:action="@{/todo/delete}" method="post">
+            <input type="hidden" name="id" th:value="${todo.id}">
+            <button type="submit">删除</button>
+        </form>
+    </li>
+</ul>
+</body>
+</html>

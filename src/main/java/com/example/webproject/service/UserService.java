@@ -16,10 +16,21 @@ public class UserService {
         return userMapper.getUserById(id);
     }
 
+    /**
+     * 插入用户
+     * 用于注册
+     * @param user
+     */
     public void insertUser(User user) {
         userMapper.insertUser(user);
     }
 
+    /**
+     * 通过用户名查找用户
+     * 用于登录
+     * @param username 用户名
+     * @return userMapper
+     */
     public User getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
     }

@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        return "login"; // 假设有一个名为 index.html 的 Thymeleaf 模板
+        return "login"; // 启动
     }
 }

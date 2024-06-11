@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+@Mapper
 public interface TodoMapper {
     @Select("SELECT * FROM todos WHERE user_id = #{userId}")
     List<Todo> getTodosByUserId(Long userId);
