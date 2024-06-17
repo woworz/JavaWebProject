@@ -1,6 +1,7 @@
 package com.example.webproject.mapper;
 
 import com.example.webproject.entity.Reminder;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

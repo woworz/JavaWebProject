@@ -22,18 +22,31 @@ public class LoginController {
         return "login";
     }
 
+    /**
+     * 登录
+     * @param username 用户名
+     * @param password 密码
+     * @param model
+     * @return String
+     */
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
+    public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
         User user = userService.getUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
-            model.addAttribute("user", user);
-            return "todo"; // 登录成功后跳转到Todo页面
+            session.setAttribute("loggedInUser", user);
+            return "redirect:/todo";
         } else {
             model.addAttribute("error", "用户名或密码错误");
-            return "login"; // 登录失败
+            return "login";
         }
     }
 
+
+    /**
+     * 登出
+     * @param session
+     * @return String
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

@@ -1,6 +1,7 @@
 package com.example.webproject.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,8 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
-    private List<Reminder> reminders; //remind关联
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reminder> reminders = new ArrayList<>();
 
     // 无参构造
     public Todo() {}
@@ -73,6 +74,14 @@ public class Todo {
         this.user = user;
     }
 
+    public List<Reminder> getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(List<Reminder> reminders) {
+        this.reminders = reminders;
+    }
+
     @Override
     public String toString() {
         return "Todo{" +
@@ -81,6 +90,7 @@ public class Todo {
                 ", description='" + description + '\'' +
                 ", completed=" + completed +
                 ", user=" + user +
+                ", reminders=" + reminders +
                 '}';
     }
 }

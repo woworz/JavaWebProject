@@ -41,7 +41,9 @@
             </div>
             <div>
                 <label>提醒时间：</label>
-                <input type="datetime-local" name="reminderTime" th:value="${#dates.format(todo.reminders[0].reminderTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
+                <input type="datetime-local" name="reminderTime"
+                       th:if="${not #lists.isEmpty(todo.reminders)}"
+                       th:value="${#dates.format(todo.reminders[0].reminderTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
             </div>
             <div>
                 <button type="submit">更新</button>

@@ -6,6 +6,7 @@ import com.example.webproject.entity.User;
 import com.example.webproject.service.ReminderService;
 import com.example.webproject.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +37,18 @@ public class TodoController {
         return "todo";
     }
 
+    /**
+     * 添加待办事项
+     * @param title 标题
+     * @param description 具体内容
+     * @param reminderTime 提醒时间
+     * @param session
+     * @return String
+     */
     @PostMapping("/add")
-    public String addTodo(@RequestParam String title, @RequestParam String description, @RequestParam(required = false) LocalDateTime reminderTime, HttpSession session) {
+    public String addTodo(@RequestParam String title, @RequestParam String description, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime reminderTime, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser == null) {
+        if (loggedInUser == null) { //未登录返回登录页
             return "redirect:/login";
         }
         Todo todo = new Todo();
