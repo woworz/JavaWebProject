@@ -27,16 +27,16 @@ public class LoginController {
         User user = userService.getUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
             model.addAttribute("user", user);
-            return "user"; // 登录成功后跳转到用户页面
+            return "todo"; // 登录成功后跳转到Todo页面
         } else {
             model.addAttribute("error", "用户名或密码错误");
-            return "login";
+            return "login"; // 登录失败
         }
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/login"; // 登出
     }
 }

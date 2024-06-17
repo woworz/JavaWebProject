@@ -5,7 +5,9 @@ import com.example.webproject.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * 用户登录、注册相关服务
+ */
 @Service
 public class UserService {
 

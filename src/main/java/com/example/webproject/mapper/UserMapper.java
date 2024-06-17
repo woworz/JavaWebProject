@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 /**
  * UserMapper存放数据库操作指令
  */
+
 @Mapper
 public interface UserMapper {
     @Select("SELECT * FROM users WHERE id = #{id}")

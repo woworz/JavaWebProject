@@ -13,3 +13,11 @@ CREATE TABLE todos (
                        user_id BIGINT,
                        FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE reminders (
+                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                           todo_id BIGINT,
+                           reminder_time TIMESTAMP,
+                           FOREIGN KEY (todo_id) REFERENCES todos(id)
+);
+

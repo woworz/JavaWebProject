@@ -1,0 +1,32 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.webproject.mapper.ReminderMapper">
+
+    <!-- ResultMap 用于映射数据库字段到实体类属性 -->
+    <resultMap id="ReminderMap" type="com.example.webproject.entity.Reminder">
+        <id column="id" property="id" />
+        <result column="reminder_time" property="reminderTime" />
+        <association property="todo" column="todo_id" javaType="com.example.webproject.entity.Todo">
+            <id column="id" property="id" />
+            <result column="title" property="title" />
+            <result column="description" property="description" />
+            <result column="completed" property="completed" />
+            <result column="user_id" property="user.id" />
+        </association>
+    </resultMap>
+
+    <!-- 查询待办事项的所有提醒 -->
+    <select id="getRemindersByTodoId" resultMap="ReminderMap">
+        SELECT r.id, r.reminder_time, r.todo_id, t.title, t.description, t.completed, t.user_id
+        FROM reminders r
+                 JOIN todos t ON r.todo_id = t.id
+        WHERE r.todo_id = #{todoId}
+    </select>
+
+    <!-- 插入提醒 -->
+    <insert id="insertReminder">
+        INSERT INTO reminders (todo_id, reminder_time)
+        VALUES (#{todo.id}, #{reminderTime})
+    </insert>
+</mapper>

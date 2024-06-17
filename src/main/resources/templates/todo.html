@@ -16,6 +16,10 @@
         <input type="text" id="description" name="description" required>
     </div>
     <div>
+        <label for="reminderTime">提醒时间：</label>
+        <input type="datetime-local" id="reminderTime" name="reminderTime">
+    </div>
+    <div>
         <button type="submit">添加</button>
     </div>
 </form>
@@ -34,6 +38,10 @@
             <div>
                 <label>完成：</label>
                 <input type="checkbox" name="completed" th:checked="${todo.completed}">
+            </div>
+            <div>
+                <label>提醒时间：</label>
+                <input type="datetime-local" name="reminderTime" th:value="${#dates.format(todo.reminders[0].reminderTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
             </div>
             <div>
                 <button type="submit">更新</button>

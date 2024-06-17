@@ -1,6 +1,7 @@
 package com.example.webproject.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "todos")
@@ -16,6 +17,9 @@ public class Todo {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
+    private List<Reminder> reminders; //remind关联
 
     // 无参构造
     public Todo() {}

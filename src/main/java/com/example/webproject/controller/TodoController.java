@@ -1,7 +1,9 @@
 package com.example.webproject.controller;
 
+import com.example.webproject.entity.Reminder;
 import com.example.webproject.entity.Todo;
 import com.example.webproject.entity.User;
+import com.example.webproject.service.ReminderService;
 import com.example.webproject.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -17,6 +20,9 @@ public class TodoController {
 
     @Autowired
     private TodoService todoService;
+
+    @Autowired
+    private ReminderService reminderService;
 
     @GetMapping
     public String showTodoList(Model model, HttpSession session) {
@@ -31,7 +37,7 @@ public class TodoController {
     }
 
     @PostMapping("/add")
-    public String addTodo(@RequestParam String title, @RequestParam String description, HttpSession session) {
+    public String addTodo(@RequestParam String title, @RequestParam String description, @RequestParam(required = false) LocalDateTime reminderTime, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
@@ -42,11 +48,19 @@ public class TodoController {
         todo.setCompleted(false);
         todo.setUser(loggedInUser);
         todoService.insertTodo(todo);
+
+        if (reminderTime != null) { //添加提醒
+            Reminder reminder = new Reminder();
+            reminder.setTodo(todo);
+            reminder.setReminderTime(reminderTime);
+            reminderService.insertReminder(reminder);
+        }
+
         return "redirect:/todo";
     }
 
     @PostMapping("/update")
-    public String updateTodo(@RequestParam Long id, @RequestParam String title, @RequestParam String description, @RequestParam boolean completed, HttpSession session) {
+    public String updateTodo(@RequestParam Long id, @RequestParam String title, @RequestParam String description, @RequestParam boolean completed, @RequestParam(required = false) LocalDateTime reminderTime, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
@@ -58,6 +72,14 @@ public class TodoController {
         todo.setCompleted(completed);
         todo.setUser(loggedInUser);
         todoService.updateTodo(todo);
+
+        if (reminderTime != null) {
+            Reminder reminder = new Reminder();
+            reminder.setTodo(todo);
+            reminder.setReminderTime(reminderTime);
+            reminderService.insertReminder(reminder);
+        }
+
         return "redirect:/todo";
     }
 
