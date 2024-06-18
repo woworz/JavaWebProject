@@ -22,10 +22,11 @@
     <div>
         <label for="category">分类：</label>
         <select id="category" name="categoryId">
-            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id == 1}"></option>
         </select>
     </div>
     <div>
+        <input type="hidden" name="completed" value="false">
         <button type="submit">添加</button>
     </div>
 </form>
@@ -54,10 +55,12 @@
             <div>
                 <label>分类：</label>
                 <select name="categoryId">
-                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id == todo.category.id}"></option>
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+                            th:selected="${todo.category != null ? category.id == todo.category.id : category.id == 1}"></option>
                 </select>
             </div>
             <div>
+                <input type="hidden" name="completed" th:value="${todo.completed ? 'true' : 'false'}">
                 <button type="submit">更新</button>
             </div>
         </form>

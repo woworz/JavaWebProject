@@ -7,7 +7,6 @@ import com.example.webproject.entity.User;
 import com.example.webproject.service.CategoryService;
 import com.example.webproject.service.ReminderService;
 import com.example.webproject.service.TodoService;
-import com.example.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,10 +25,12 @@ public class TodoController {
     private TodoService todoService;
 
     @Autowired
-    private ReminderService reminderService; //提醒
+    private ReminderService reminderService;
 
     @Autowired
-    private CategoryService categoryService; //分类
+    private CategoryService categoryService;
+
+    private static final Long DEFAULT_CATEGORY_ID = 1L; // 默认分类 ID
 
     @GetMapping
     public String showTodoList(Model model, HttpSession session) {
@@ -44,17 +45,13 @@ public class TodoController {
         return "todo";
     }
 
-    /**
-     * 添加todo
-     * @param title 标题
-     * @param description 具体描述
-     * @param reminderTime 提醒时间
-     * @param categoryId 分类ID
-     * @param session
-     * @return String
-     */
     @PostMapping("/add")
-    public String addTodo(@RequestParam String title, @RequestParam String description, @RequestParam(required = false) LocalDateTime reminderTime, @RequestParam Long categoryId, HttpSession session) {
+    public String addTodo(@RequestParam String title,
+                          @RequestParam String description,
+                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime reminderTime,
+                          @RequestParam(required = false) Long categoryId,
+                          @RequestParam(defaultValue = "false") boolean completed,
+                          HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
@@ -62,9 +59,13 @@ public class TodoController {
         Todo todo = new Todo();
         todo.setTitle(title);
         todo.setDescription(description);
-        todo.setCompleted(false);
+        todo.setCompleted(completed); // 处理completed参数
         todo.setUser(loggedInUser);
 
+        // 使用默认分类 ID
+        if (categoryId == null) {
+            categoryId = DEFAULT_CATEGORY_ID;
+        }
         Category category = categoryService.getCategoryById(categoryId);
         todo.setCategory(category);
 
@@ -81,7 +82,13 @@ public class TodoController {
     }
 
     @PostMapping("/update")
-    public String updateTodo(@RequestParam Long id, @RequestParam String title, @RequestParam String description, @RequestParam boolean completed, @RequestParam(required = false) LocalDateTime reminderTime, @RequestParam Long categoryId, HttpSession session) {
+    public String updateTodo(@RequestParam Long id,
+                             @RequestParam String title,
+                             @RequestParam String description,
+                             @RequestParam boolean completed,
+                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime reminderTime,
+                             @RequestParam(required = false) Long categoryId,
+                             HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
@@ -91,6 +98,10 @@ public class TodoController {
         todo.setDescription(description);
         todo.setCompleted(completed);
 
+        // 使用默认分类 ID
+        if (categoryId == null) {
+            categoryId = DEFAULT_CATEGORY_ID;
+        }
         Category category = categoryService.getCategoryById(categoryId);
         todo.setCategory(category);
 
