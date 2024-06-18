@@ -18,4 +18,7 @@ public interface TodoMapper {
 
     @Delete("DELETE FROM todos WHERE id = #{id}")
     void deleteTodo(Long id);
+
+    @Select("SELECT * FROM todos WHERE id = #{id}")
+    Todo getTodoById(Long id);
 }

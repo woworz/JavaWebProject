@@ -1,10 +1,13 @@
 package com.example.webproject.controller;
 
+import com.example.webproject.entity.Category;
 import com.example.webproject.entity.Reminder;
 import com.example.webproject.entity.Todo;
 import com.example.webproject.entity.User;
+import com.example.webproject.service.CategoryService;
 import com.example.webproject.service.ReminderService;
 import com.example.webproject.service.TodoService;
+import com.example.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,7 +26,10 @@ public class TodoController {
     private TodoService todoService;
 
     @Autowired
-    private ReminderService reminderService;
+    private ReminderService reminderService; //提醒
+
+    @Autowired
+    private CategoryService categoryService; //分类
 
     @GetMapping
     public String showTodoList(Model model, HttpSession session) {
@@ -34,21 +40,23 @@ public class TodoController {
         List<Todo> todos = todoService.getTodosByUserId(loggedInUser.getId());
         model.addAttribute("todos", todos);
         model.addAttribute("userId", loggedInUser.getId());
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "todo";
     }
 
     /**
-     * 添加待办事项
+     * 添加todo
      * @param title 标题
-     * @param description 具体内容
+     * @param description 具体描述
      * @param reminderTime 提醒时间
+     * @param categoryId 分类ID
      * @param session
      * @return String
      */
     @PostMapping("/add")
-    public String addTodo(@RequestParam String title, @RequestParam String description, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime reminderTime, HttpSession session) {
+    public String addTodo(@RequestParam String title, @RequestParam String description, @RequestParam(required = false) LocalDateTime reminderTime, @RequestParam Long categoryId, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser == null) { //未登录返回登录页
+        if (loggedInUser == null) {
             return "redirect:/login";
         }
         Todo todo = new Todo();
@@ -56,9 +64,13 @@ public class TodoController {
         todo.setDescription(description);
         todo.setCompleted(false);
         todo.setUser(loggedInUser);
+
+        Category category = categoryService.getCategoryById(categoryId);
+        todo.setCategory(category);
+
         todoService.insertTodo(todo);
 
-        if (reminderTime != null) { //添加提醒
+        if (reminderTime != null) {
             Reminder reminder = new Reminder();
             reminder.setTodo(todo);
             reminder.setReminderTime(reminderTime);
@@ -69,17 +81,19 @@ public class TodoController {
     }
 
     @PostMapping("/update")
-    public String updateTodo(@RequestParam Long id, @RequestParam String title, @RequestParam String description, @RequestParam boolean completed, @RequestParam(required = false) LocalDateTime reminderTime, HttpSession session) {
+    public String updateTodo(@RequestParam Long id, @RequestParam String title, @RequestParam String description, @RequestParam boolean completed, @RequestParam(required = false) LocalDateTime reminderTime, @RequestParam Long categoryId, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
-        Todo todo = new Todo();
-        todo.setId(id);
+        Todo todo = todoService.getTodoById(id);
         todo.setTitle(title);
         todo.setDescription(description);
         todo.setCompleted(completed);
-        todo.setUser(loggedInUser);
+
+        Category category = categoryService.getCategoryById(categoryId);
+        todo.setCategory(category);
+
         todoService.updateTodo(todo);
 
         if (reminderTime != null) {

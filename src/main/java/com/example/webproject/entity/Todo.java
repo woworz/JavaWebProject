@@ -19,8 +19,14 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //reminder关联
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reminder> reminders = new ArrayList<>();
+
+    //category关联
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     // 无参构造
     public Todo() {}
@@ -82,6 +88,14 @@ public class Todo {
         this.reminders = reminders;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Todo{" +
@@ -91,6 +105,7 @@ public class Todo {
                 ", completed=" + completed +
                 ", user=" + user +
                 ", reminders=" + reminders +
+                ", category=" + category +
                 '}';
     }
 }

@@ -21,3 +21,11 @@ CREATE TABLE reminders (
                            FOREIGN KEY (todo_id) REFERENCES todos(id)
 );
 
+CREATE TABLE categories (
+                            id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                            name VARCHAR(50) NOT NULL
+);
+
+ALTER TABLE todos ADD COLUMN category_id BIGINT;
+ALTER TABLE todos ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id);
+

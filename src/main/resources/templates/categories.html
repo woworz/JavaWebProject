@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>分类管理</title>
+</head>
+<body>
+<h2>分类管理</h2>
+<form th:action="@{/categories/add}" method="post">
+    <div>
+        <label for="name">分类名称：</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <button type="submit">添加分类</button>
+    </div>
+</form>
+<ul>
+    <li th:each="category : ${categories}">
+        <span th:text="${category.name}"></span>
+    </li>
+</ul>
+</body>
+</html>
