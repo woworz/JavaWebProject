@@ -39,12 +39,29 @@ public class TodoController {
             return "redirect:/login";
         }
         List<Todo> todos = todoService.getTodosByUserId(loggedInUser.getId());
+        for (Todo todo : todos) {
+            // 确保每个待办事项都有正确的分类加载
+            if (todo.getCategory() == null) {
+                todo.setCategory(categoryService.getCategoryById(DEFAULT_CATEGORY_ID));
+            }
+        }
         model.addAttribute("todos", todos);
         model.addAttribute("userId", loggedInUser.getId());
         model.addAttribute("categories", categoryService.getAllCategories());
         return "todo";
     }
 
+
+    /**
+     * 添加TODO
+     * @param title 标题
+     * @param description 具体描述
+     * @param reminderTime 提醒时间
+     * @param categoryId 分类ID
+     * @param completed 完成标志
+     * @param session
+     * @return String
+     */
     @PostMapping("/add")
     public String addTodo(@RequestParam String title,
                           @RequestParam String description,
@@ -59,7 +76,7 @@ public class TodoController {
         Todo todo = new Todo();
         todo.setTitle(title);
         todo.setDescription(description);
-        todo.setCompleted(completed); // 处理completed参数
+        todo.setCompleted(completed);
         todo.setUser(loggedInUser);
 
         // 使用默认分类 ID
@@ -81,6 +98,17 @@ public class TodoController {
         return "redirect:/todo";
     }
 
+    /**
+     * 更新TODO
+     * @param id TODO_id
+     * @param title 标题
+     * @param description 描述
+     * @param completed 完成标志
+     * @param reminderTime 提醒时间
+     * @param categoryId 分类ID
+     * @param session
+     * @return String
+     */
     @PostMapping("/update")
     public String updateTodo(@RequestParam Long id,
                              @RequestParam String title,
