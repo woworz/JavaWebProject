@@ -135,11 +135,21 @@ public class TodoController {
 
         todoService.updateTodo(todo);
 
+        // 更新提醒时间
+        List<Reminder> reminders = reminderService.getRemindersByTodoId(id);
         if (reminderTime != null) {
-            Reminder reminder = new Reminder();
-            reminder.setTodo(todo);
-            reminder.setReminderTime(reminderTime);
-            reminderService.insertReminder(reminder);
+            if (!reminders.isEmpty()) {
+                Reminder reminder = reminders.get(0);
+                reminder.setReminderTime(reminderTime);
+                reminderService.updateReminder(reminder);
+            } else {
+                Reminder reminder = new Reminder();
+                reminder.setTodo(todo);
+                reminder.setReminderTime(reminderTime);
+                reminderService.insertReminder(reminder);
+            }
+        } else {
+            reminderService.deleteRemindersByTodoId(id);
         }
 
         return "redirect:/todo";

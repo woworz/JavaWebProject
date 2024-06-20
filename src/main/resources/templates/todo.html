@@ -47,10 +47,9 @@
                 <input type="checkbox" name="completed" th:checked="${todo.completed}">
             </div>
             <div>
-                <label>提醒时间：</label>
-                <input type="datetime-local" name="reminderTime"
-                       th:if="${not #lists.isEmpty(todo.reminders)}"
-                       th:value="${#dates.format(todo.reminders[0].reminderTime, 'yyyy-MM-dd\'T\'HH:mm')}" />
+                <label>修改提醒时间：</label>
+                <input type="datetime-local" name="reminderTime" th:if="${not #lists.isEmpty(todo.reminders)}" th:value="${#lists.isEmpty(todo.reminders) ? '' : #dates.format(todo.reminders[0].reminderTime, 'yyyy-MM-dd\'T\'HH:mm')}">
+                <input type="datetime-local" name="reminderTime" th:if="${#lists.isEmpty(todo.reminders)}">
             </div>
             <div>
                 <label>修改分类：</label>

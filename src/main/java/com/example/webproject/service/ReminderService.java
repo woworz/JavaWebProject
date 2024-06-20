@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * 提醒服务
- */
 @Service
 public class ReminderService {
 
@@ -23,4 +20,13 @@ public class ReminderService {
     public void insertReminder(Reminder reminder) {
         reminderMapper.insertReminder(reminder);
     }
+
+    public void updateReminder(Reminder reminder) {
+        reminderMapper.updateReminder(reminder);
+    }
+
+    public void deleteRemindersByTodoId(Long todoId) {
+        reminderMapper.deleteRemindersByTodoId(todoId);
+    }
 }
+
