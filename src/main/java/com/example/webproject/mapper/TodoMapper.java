@@ -9,27 +9,9 @@ import java.util.List;
 public interface TodoMapper {
 
     @Select("SELECT t.*, c.id AS category_id, c.name AS category_name FROM todos t LEFT JOIN categories c ON t.category_id = c.id WHERE t.id = #{id}")
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "title", column = "title"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "completed", column = "completed"),
-            @Result(property = "category.id", column = "category_id"),
-            @Result(property = "category.name", column = "category_name"),
-            @Result(property = "user.id", column = "user_id")
-    })
     Todo getTodoById(Long id);
 
     @Select("SELECT t.*, c.id AS category_id, c.name AS category_name FROM todos t LEFT JOIN categories c ON t.category_id = c.id WHERE t.user_id = #{userId}")
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "title", column = "title"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "completed", column = "completed"),
-            @Result(property = "category.id", column = "category_id"),
-            @Result(property = "category.name", column = "category_name"),
-            @Result(property = "user.id", column = "user_id")
-    })
     List<Todo> getTodosByUserId(Long userId);
 
     @Insert("INSERT INTO todos (title, description, completed, user_id, category_id) VALUES (#{title}, #{description}, #{completed}, #{user.id}, #{category.id})")

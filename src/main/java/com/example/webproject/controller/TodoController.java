@@ -39,29 +39,12 @@ public class TodoController {
             return "redirect:/login";
         }
         List<Todo> todos = todoService.getTodosByUserId(loggedInUser.getId());
-        for (Todo todo : todos) {
-            // 确保每个待办事项都有正确的分类加载
-            if (todo.getCategory() == null) {
-                todo.setCategory(categoryService.getCategoryById(DEFAULT_CATEGORY_ID));
-            }
-        }
         model.addAttribute("todos", todos);
         model.addAttribute("userId", loggedInUser.getId());
         model.addAttribute("categories", categoryService.getAllCategories());
         return "todo";
     }
 
-
-    /**
-     * 添加TODO
-     * @param title 标题
-     * @param description 具体描述
-     * @param reminderTime 提醒时间
-     * @param categoryId 分类ID
-     * @param completed 完成标志
-     * @param session
-     * @return String
-     */
     @PostMapping("/add")
     public String addTodo(@RequestParam String title,
                           @RequestParam String description,
@@ -98,17 +81,26 @@ public class TodoController {
         return "redirect:/todo";
     }
 
-    /**
-     * 更新TODO
-     * @param id TODO_id
-     * @param title 标题
-     * @param description 描述
-     * @param completed 完成标志
-     * @param reminderTime 提醒时间
-     * @param categoryId 分类ID
-     * @param session
-     * @return String
-     */
+    @PostMapping("/updateCompleted")
+    public String updateCompleted(@RequestParam Long id, @RequestParam(required = false, defaultValue = "false") boolean completed) {
+        Todo todo = todoService.getTodoById(id);
+        todo.setCompleted(completed);
+        todoService.updateTodo(todo);
+        return "redirect:/todo";
+    }
+
+    @GetMapping("/details/{id}")
+    public String showTodoDetails(@PathVariable Long id, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        Todo todo = todoService.getTodoById(id);
+        model.addAttribute("todo", todo);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "todoDetails";
+    }
+
     @PostMapping("/update")
     public String updateTodo(@RequestParam Long id,
                              @RequestParam String title,
@@ -136,8 +128,8 @@ public class TodoController {
         todoService.updateTodo(todo);
 
         // 更新提醒时间
-        List<Reminder> reminders = reminderService.getRemindersByTodoId(id);
         if (reminderTime != null) {
+            List<Reminder> reminders = reminderService.getRemindersByTodoId(id);
             if (!reminders.isEmpty()) {
                 Reminder reminder = reminders.get(0);
                 reminder.setReminderTime(reminderTime);
