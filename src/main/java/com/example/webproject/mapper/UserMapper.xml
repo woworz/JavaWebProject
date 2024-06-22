@@ -20,4 +20,18 @@
     <select id="getUserByUsername" resultMap="UserMap">
         SELECT * FROM users WHERE username = #{username}
     </select>
+
+    <update id="updateUser" parameterType="com.example.webproject.entity.User">
+        UPDATE users
+        SET username = #{username}, password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="Long">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <select id="findAll" resultType="com.example.webproject.entity.User">
+        SELECT * FROM users
+    </select>
 </mapper>

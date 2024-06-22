@@ -42,6 +42,7 @@ public class TodoController {
         model.addAttribute("todos", todos);
         model.addAttribute("userId", loggedInUser.getId());
         model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("user", loggedInUser);
         return "todo";
     }
 

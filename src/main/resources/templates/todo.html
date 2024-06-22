@@ -54,5 +54,8 @@
         </form>
     </li>
 </ul>
+<div th:if="${user.id == 1}">
+    <a th:href="@{/user/management}">用户管理</a>
+</div>
 </body>
 </html>

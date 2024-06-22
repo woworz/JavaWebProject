@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+</head>
+<body>
+<h2>User Details</h2>
+<form th:action="@{/user/update}" method="post">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <div>
+        <label>用户名：</label>
+        <input type="text" name="username" th:value="${user.username}" required>
+    </div>
+    <div>
+        <label>密码：</label>
+        <input type="password" name="password" required>
+    </div>
+    <div>
+        <button type="submit">更新</button>
+    </div>
+</form>
+<form th:action="@{/user/delete}" method="post">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <button type="submit">删除</button>
+</form>
+<div>
+    <a th:href="@{/user/management}">返回用户管理</a>
+</div>
+</body>
+</html>

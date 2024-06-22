@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>User Management</title>
+</head>
+<body>
+<h2>User Management</h2>
+<ul>
+  <li th:each="user : ${users}">
+    <a th:href="@{/user/details/{id}(id=${user.id})}" th:text="${user.username}"></a>
+  </li>
+</ul>
+<div>
+  <a th:href="@{/todo}">返回TodoList</a>
+</div>
+</body>
+</html>

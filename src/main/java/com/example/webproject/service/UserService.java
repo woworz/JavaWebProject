@@ -5,6 +5,8 @@ import com.example.webproject.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 用户登录、注册相关服务
  */
@@ -36,4 +38,17 @@ public class UserService {
     public User getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
     }
+
+    public List<User> getAllUsers() {
+        return userMapper.findAll();
+    }
+
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
+    }
+
+    public void deleteUser(Long id) {
+        userMapper.deleteUser(id);
+    }
+
 }
