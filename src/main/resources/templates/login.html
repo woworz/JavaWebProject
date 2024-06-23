@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>用户登录</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css?}"/>
 </head>
 <body>
     <div class="container">
@@ -11,11 +11,11 @@
         <form th:action="@{/login}" method="post">
             <div>
                 <label for="username">用户名：</label><!--这个label与下面input关联-->
-                <input type="text" id="username" name="username" required><!--强制填写-->
+                <input type="text" id="username" name="username" class="input" required><!--强制填写-->
             </div>
             <div>
                 <label for="password">密码：</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password"  class="input" required>
             </div>
             <div>
                 <button type="submit">登录</button>
