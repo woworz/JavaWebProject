@@ -86,3 +86,27 @@ li a {
 li a:hover {
     text-decoration: underline;
 }
+
+.bt2 {
+    background-color: #28a745; /* 绿色背景 */
+    color: white;
+    border-color: #28a745;
+    width: 200px;
+    margin: 20px;
+}
+
+.bt2:hover {
+    background-color: #218838; /* 悬浮时更深的绿色 */
+}
+
+.bt3 {
+    background-color: #ff9800; /* 橙色背景 */
+    color: white;
+    border-color: #ff9800;
+    width: 200px;
+    margin: 20px;
+}
+
+.bt3:hover {
+    background-color: #d97706; /* 悬浮时更深的橙色 */
+}

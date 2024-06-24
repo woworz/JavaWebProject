@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Todo列表</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/todo.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/todo.css?v=2}">
     <script>
         function ensureCompletedField(form) {
             if (!form.completed.checked) {
@@ -55,8 +55,17 @@
         </form>
     </li>
 </ul>
+
 <div th:if="${user.id == 1}">
-    <a th:href="@{/user/management}">用户管理</a>
+    <form th:action="@{/user/management}" method="get">
+        <button type="submit" class="bt2">用户管理</button>
+    </form>
+</div>
+
+<div>
+    <form th:action="@{/categories}" method="get" style="display:inline">
+        <button type="submit" class="bt3">管理分类</button>
+    </form>
 </div>
 </body>
 </html>
