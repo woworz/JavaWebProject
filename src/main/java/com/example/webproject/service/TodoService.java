@@ -4,6 +4,7 @@ import com.example.webproject.entity.Todo;
 import com.example.webproject.mapper.TodoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public class TodoService {
 
     @Autowired
     private TodoMapper todoMapper;
+    @Autowired
+    private ReminderService reminderService;
 
     public Todo getTodoById(Long id) {
         return todoMapper.getTodoById(id);
@@ -31,5 +34,13 @@ public class TodoService {
 
     public void deleteTodo(Long id) {
         todoMapper.deleteTodo(id);
+    }
+
+    @Transactional
+    public void deleteTodoWithReminders(Long todoId) {
+        // 先删除相关的 reminders
+        reminderService.deleteRemindersByTodoId(todoId);
+        // 然后删除 todo
+        todoMapper.deleteTodo(todoId);
     }
 }

@@ -11,7 +11,9 @@ CREATE TABLE todos (
                        description TEXT,
                        completed BOOLEAN NOT NULL,
                        user_id BIGINT,
-                       FOREIGN KEY (user_id) REFERENCES users(id)
+                       `category_id` BIGINT(20) DEFAULT NULL,
+                       FOREIGN KEY (user_id) REFERENCES users(id),
+                       CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
 CREATE TABLE reminders (
@@ -26,6 +28,8 @@ CREATE TABLE categories (
                             name VARCHAR(50) NOT NULL
 );
 
-ALTER TABLE todos ADD COLUMN category_id BIGINT;
-ALTER TABLE todos ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id);
-
+ALTER TABLE reminders
+    ADD CONSTRAINT fk_todo
+        FOREIGN KEY (todo_id)
+            REFERENCES todos(id)
+            ON DELETE CASCADE;
